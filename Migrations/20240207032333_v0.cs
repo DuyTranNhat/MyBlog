@@ -40,7 +40,7 @@ namespace Migration_EF.Migrations
             fakerArticle.RuleFor(a => a.PublishDate, fakerArticle => fakerArticle.Date.Between(new DateTime(2023, 1, 1), new DateTime(2024, 7, 30)));
             fakerArticle.RuleFor(a => a.Content, fakerArticle => fakerArticle.Lorem.Paragraph(1));
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 150; i++)
             {
                 Article article = fakerArticle.Generate();
                 migrationBuilder.InsertData(

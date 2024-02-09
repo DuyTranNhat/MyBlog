@@ -10,7 +10,7 @@ namespace Migration_EF.Models
             
         }
 
-        DbSet<Article> articals { get; set; }
+        public DbSet<Article> articals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
