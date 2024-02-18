@@ -20,7 +20,7 @@ namespace Migration_EF.Pages_Blog
 
         public IList<Article> Article { get;set; } = default!;
 
-        public const int ITEMS_PER_PAGE = 20;
+        public const int ITEMS_PER_PAGE = 20 ;
         [BindProperty(SupportsGet = true, Name = "p")]
         public int currentPage { get; set; }
         public int countPages { get; set; }
