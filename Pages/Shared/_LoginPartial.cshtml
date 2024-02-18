@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using Migration_EF.Models;
+
+@inject SignInManager<AppUser> SignInMananger
+@inject UserManager<AppUser> UserManager
+
+@{
+    // SignInMananger.IsSignedIn(User)
+}
+
+<ul class="navbar-nav" >
+    @if (SignInMananger.IsSignedIn(User)) {
+        <a class="text-dark nav-link" asp-area="Identity" asp-page="/identity/account/manage/index" >
+            Xin Chào @UserManager.GetUserName(User)    
+        </a>
+    } else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Register">Đăng Ký</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Login">Đăng Nhập</a>
+        </li>
+    }
+    
+</ul>
