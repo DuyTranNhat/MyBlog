@@ -3,9 +3,16 @@
 
 @{
     ViewData["Title"] = "Log in";
+    var message = TempData["ErrorMessage"];
 }
 
 <h1>@ViewData["Title"]</h1>
+@if(TempData.ContainsKey("ErrorMessage"))
+{
+    <partial name="/Areas/Identity/Pages/Account/_StatusMessage.cshtml" model="message" />
+}
+
+
 <div class="row">
     <div class="col-md-4">
         <section>
