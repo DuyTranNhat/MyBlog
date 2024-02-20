@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Migration_EF.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,9 +23,22 @@ builder.Services.AddDbContext<BlogContext>(options =>
 
 
 
-
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication();
+builder.Services.AddAuthentication()
+    .AddGoogle(option =>
+        {
+            var ggConfig = configuration.GetSection("Authentication:Google");
+            option.ClientId = ggConfig["ClientId"];
+            option.ClientSecret = ggConfig["ClientSecret"];
+            option.CallbackPath = "/login-from-google";
+        })
+    .AddFacebook(option =>
+    {
+        var fbConfig = configuration.GetSection("Authentication:Facebook");
+        option.AppId = fbConfig["AppId"];
+        option.AppSecret = fbConfig["AppSecret"];
+        //option.CallbackPath = "/login-facebook";
+    });
 
 
 //////register Identity (*)
@@ -44,7 +58,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 
 // Truy cập IdentityOptions
-builder.Services.Configure<IdentityOptions>(options => {
+builder.Services.Configure<IdentityOptions>(options =>
+{
     // Thiết lập về Password
     options.Password.RequireDigit = false; // Không bắt phải có số
     options.Password.RequireLowercase = false; // Không bắt phải có chữ thường
@@ -81,7 +96,8 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
-}else
+}
+else
 {
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
