@@ -1,0 +1,55 @@
+﻿@page
+@model Migration_EF.Areas.Admin.Pages.User.IndexModel
+@{
+    ViewData["Titile"] = "List Of Users";
+}
+
+<h2>@ViewData["Titile"]</h2>
+
+<hr />
+
+@{
+    var pagingModel = new Migration_EF.Helpers.PagingModel()
+            {
+                currentPage = Model.currentPage,
+                countPages = Model.countPages,
+                // countPages = Model.countPages,
+                generateUrl = (int? p) => Url.Page("./Index", new { p = p })
+            };
+}
+
+<h2>
+    @Model.currentPage - @Model.countPages
+</h2>
+
+<partial name="_Paging" model="@pagingModel" />
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+<table class="table" >
+    <tr>
+        <th>User's Name</th>
+        <th>responsibility</th>
+        <th>Action</th>
+    </tr>
+    @if(Model.users != null)
+    {
+        @foreach(var user in Model.users)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>
+                    @if (string.IsNullOrEmpty(user.userRoles))
+                    {
+                        <a class="text-dark text-decoration-none btn btn-outline-info" asp-page="./AddRole" asp-route-id="@user.Id" >+ Asign new roles</a>
+                    } else
+                    {
+                        <a class="text-uppercase text-decoration-none" asp-page="./AddRole" asp-route-id="@user.Id">@user.userRoles</a>
+                    }
+                </td>
+                <td>
+                    <a asp-page="./SetPassword" asp-route-id="@user.Id" class="btn btn-success">Reset Password </a>
+                </td>
+            </tr>
+        }
+    }
+</table>

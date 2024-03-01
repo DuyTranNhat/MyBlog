@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Migration_EF.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Migration_EF.Areas.Identity.Pages.Account
 {
@@ -93,7 +94,10 @@ namespace Migration_EF.Areas.Identity.Pages.Account
         {
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
+            //properties chứa thông tin dịch vụ ngoài tên, id, clientID
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            //Phuong thuc su dung thu vien tuong ung provider ket noi dich vu ngoai 
+            //Noi dung nay se duoc render tren trinh duyet, cho phep truy cap ung dung ngoai
             return new ChallengeResult(provider, properties);
         }
 
@@ -125,7 +129,7 @@ namespace Migration_EF.Areas.Identity.Pages.Account
             }
             else
             {
-                // If the user does not have an account, then ask the user to create an account.
+                // If the user does n   ot have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
@@ -152,6 +156,48 @@ namespace Migration_EF.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
+
+
+                var registerUser = await _userManager.FindByEmailAsync(Input.Email);
+                string externalEmail = null;
+                AppUser externalEmailUser = null;
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+                {
+                    externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                }
+
+                //if (externalEmail != null)
+                //{
+                //    externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
+                //}
+
+                //if ((registerUser == null) &&  (externalEmail != null))
+                //{
+                //    ModelState.AddModelError(string.Empty, "Email is not available, pleaase register before use this service");
+                //    return Page();
+                //}
+
+                //if ((registerUser != null) && (externalEmailUser != null))
+                //{
+                //    if (registerUser.Id == externalEmailUser.Id)
+                //    {
+                //        var rsLink = await _userManager.AddLoginAsync(registerUser, info);
+                //        if (rsLink.Succeeded)
+                //        {
+                //            await _signInManager.SignInAsync(externalEmailUser, isPersistent: false);
+                //            return LocalRedirect(returnUrl);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError(string.Empty, "Error, Please use another email.");
+                //        return Page();
+                //    }
+                //}
+
+                //return Content("Stop!");
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

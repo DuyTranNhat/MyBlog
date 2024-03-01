@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +16,15 @@ namespace Migration_EF.Pages_Blog
     {
         private readonly Migration_EF.Models.BlogContext _context;
 
-        public EditModel(Migration_EF.Models.BlogContext context)
+        private readonly IAuthorizationService _authorizationService;
+        private ILogger<EditModel> _loggger;
+
+        public EditModel(Migration_EF.Models.BlogContext context, IAuthorizationService authorizationService, ILogger<EditModel> loggger)
         {
             _context = context;
-        }
+            _authorizationService = authorizationService;
+            _loggger = loggger;
+        }   
 
         [BindProperty]
         public Article Article { get; set; } = default!;
@@ -52,7 +59,17 @@ namespace Migration_EF.Pages_Blog
 
             try
             {
-                await _context.SaveChangesAsync();
+                var canUpdate = await _authorizationService.AuthorizeAsync(this.User, Article, "CanUpdateArticle");
+                _loggger.LogError("--------------------");
+
+                if (canUpdate.Succeeded)
+                {
+                    await _context.SaveChangesAsync();
+                } else
+                {
+                    return Content("You cannot update article over 3 days!");
+                }
+
             }
             catch (DbUpdateConcurrencyException)
             {
