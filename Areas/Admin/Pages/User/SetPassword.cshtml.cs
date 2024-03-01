@@ -11,17 +11,22 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Migration_EF.Areas.Admin.Pages.User;
 using Migration_EF.Models;
 
-namespace Migration_EF.Areas.Identity.Pages.Account.Manage
+namespace Migration_EF.Areas.Users
 {
     public class SetPasswordModel : UserPageModel
     {
-       
+        private readonly ILogger _logger;
 
         public SetPasswordModel(
-            BlogContext context,
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager) : base(context, userManager, signInManager)
-        {}
+            SignInManager<AppUser> signInManager,
+            BlogContext blogContext,
+            ILogger<SetPasswordModel> logger) : base(blogContext, userManager, signInManager)
+
+        {
+            _logger = logger;
+            _logger.LogInformation("loger again");
+        }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -63,35 +68,45 @@ namespace Migration_EF.Areas.Identity.Pages.Account.Manage
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        private AppUser user { get; set; }
+
+        public async Task<IActionResult> OnGetAsync(string id)
         {
-            var user = await _userManager.GetUserAsync(User);
+            if(string.IsNullOrEmpty(id)) return NotFound($"Cannot find user having '{id}'");
+
+            user = await _userManager.FindByIdAsync(id);
+
+            _logger.LogInformation("Onget");
+
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{id}'.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
 
             if (hasPassword)
             {
-                return RedirectToPage("./ChangePassword");
+                return Content("Has password");
             }
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string id)
         {
+
+            _logger.LogInformation("OnPost");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            user = await _userManager.FindByIdAsync(id);
+
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user with ID '{id}'.");
             }
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, Input.NewPassword);
@@ -104,10 +119,9 @@ namespace Migration_EF.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your password has been set.";
+            StatusMessage = $"You've just update password for user {user.UserName}";
 
-            return RedirectToPage();
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -1,0 +1,47 @@
+﻿@page "/Admin/Role/Edit/{id}"
+@model Migration_EF.Areas.Admin.Pages.Role.EditModel
+@{
+    ViewData["Title"] = "Edit Page";
+}
+
+<h2>@ViewData["Title"]</h2>
+<partial name="_StatusMessage" model="@Model.StatusMessage" ></partial>
+
+<hr />
+<div class="row" >
+    <div class="col-md-4" >
+        <form method="post" >
+            <div asp-asp-validation-summary="All" class="text-danger" ></div>
+            <div class="form-group mb-4" >
+                <label asp-for="inputModelEdit.Name"  class="control-label"></label>
+                <input asp-for="inputModelEdit.Name" class="form-control" />
+                <span asp-validation-for="inputModelEdit.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group d-flex flex-row">
+                <input type="submit" value="Complete Update" class="btn btn-success" />
+                <a asp-page="./index" class="btn btn-dark mx-3">Back To List</a>
+            </div>
+        </form>
+        <hr />
+        <h4>Claims of role
+            <a asp-page="./AddRoleClaim" asp-route-roleid="@Model.role.Id">+Add Claim</a>
+        </h4>
+        @if(Model.Claims.Count > 0)
+        {
+            <ul>
+                @foreach(var claim in Model.Claims)
+                {
+                    <a class="d-block" asp-page="./EditRoleClaim" asp-route-claimid="@claim.Id" >
+                        @claim.ClaimType : @claim.ClaimValue
+                    </a>
+                }
+            </ul>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -167,36 +167,36 @@ namespace Migration_EF.Areas.Identity.Pages.Account
                     externalEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
                 }
 
-                if (externalEmail != null)
-                {
-                    externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
-                }
+                //if (externalEmail != null)
+                //{
+                //    externalEmailUser = await _userManager.FindByEmailAsync(externalEmail);
+                //}
 
-                if ((registerUser == null) &&  (externalEmail != null))
-                {
-                    ModelState.AddModelError(string.Empty, "Email is not available, pleaase register before use this service");
-                    return Page();
-                }
+                //if ((registerUser == null) &&  (externalEmail != null))
+                //{
+                //    ModelState.AddModelError(string.Empty, "Email is not available, pleaase register before use this service");
+                //    return Page();
+                //}
 
-                if ((registerUser != null) && (externalEmailUser != null))
-                {
-                    if (registerUser.Id == externalEmailUser.Id)
-                    {
-                        var rsLink = await _userManager.AddLoginAsync(registerUser, info);
-                        if (rsLink.Succeeded)
-                        {
-                            await _signInManager.SignInAsync(externalEmailUser, isPersistent: false);
-                            return LocalRedirect(returnUrl);
-                        }
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Error, Please use another email.");
-                        return Page();
-                    }
-                }
+                //if ((registerUser != null) && (externalEmailUser != null))
+                //{
+                //    if (registerUser.Id == externalEmailUser.Id)
+                //    {
+                //        var rsLink = await _userManager.AddLoginAsync(registerUser, info);
+                //        if (rsLink.Succeeded)
+                //        {
+                //            await _signInManager.SignInAsync(externalEmailUser, isPersistent: false);
+                //            return LocalRedirect(returnUrl);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        ModelState.AddModelError(string.Empty, "Error, Please use another email.");
+                //        return Page();
+                //    }
+                //}
 
-                return Content("Stop!");
+                //return Content("Stop!");
 
                 var user = CreateUser();
 

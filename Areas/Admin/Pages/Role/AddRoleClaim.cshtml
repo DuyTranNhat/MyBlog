@@ -1,0 +1,39 @@
+﻿@page "/Admin/Role/AddRoleClaim/{roleId}"
+@model Migration_EF.Areas.Admin.Pages.Role.AddRoleClaimModel;
+@{
+    ViewData["Title"] = "Add New Cliam For";
+}
+
+<h2>@ViewData["Title"] @Model.role.Name</h2>
+<partial name="_StatusMessage" model="@Model.StatusMessage" ></partial>
+
+<hr />
+<div class="row" >
+    <div class="col-md-4" >
+        <form method="post" >
+            <div asp-asp-validation-summary="All" class="text-danger" ></div>
+            <div class="form-group mb-4" >
+                <label asp-for="inputModel.ClaimType"  class="control-label"></label>
+                <input asp-for="inputModel.ClaimType" class="form-control" />
+                <span asp-validation-for="inputModel.ClaimType" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label asp-for="inputModel.ClaimValue" class="control-label"></label>
+                <input asp-for="inputModel.ClaimValue" class="form-control" />
+                <span asp-validation-for="inputModel.ClaimValue" class="text-danger"></span>
+            </div>
+
+            <div class="form-group d-flex flex-row">
+                <input type="submit" value="Add New Claim" class="btn btn-success" />
+                <a asp-page="./Edit" asp-route-id="@Model.role.Id" class="btn btn-dark mx-3">Back List Role</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

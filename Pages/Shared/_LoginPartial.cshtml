@@ -13,14 +13,17 @@
         <a class="text-dark nav-link" asp-area="Identity" asp-page="/identity/account/manage/index" >
             Xin Chào @UserManager.GetUserName(User)    
         </a>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Logout">Log out</a>
+        </li>
     } else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Register">Đăng Ký</a>
+            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Register">Register</a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Login">Đăng Nhập</a>
+            <a class="nav-link text-dark" asp-area="identity" asp-page="/Account/Login">Sign in</a>
         </li>
     }
     

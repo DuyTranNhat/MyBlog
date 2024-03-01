@@ -39,7 +39,7 @@ namespace Migration_EF.Pages_Blog
             var rs = (from c in _context.articals
                       orderby c.PublishDate descending
                       select c)
-                      .Skip(10 * (currentPage - 1))
+                      .Skip(ITEMS_PER_PAGE * (currentPage - 1))
                       .Take(ITEMS_PER_PAGE);
 
             if (string.IsNullOrEmpty(searchInput))
