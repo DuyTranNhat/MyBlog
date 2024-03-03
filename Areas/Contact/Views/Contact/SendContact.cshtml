@@ -1,0 +1,50 @@
+﻿@model Migration_EF.Models.Contacts.Contact
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Gửi liên hệ tới AppMvc";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="contact-firstcol p-2 h-100">
+            <img src="data:image/jpeg;base64,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" />
+            <h1>@ViewData["Title"]</h1>
+            <h4>Chúng tôi luôn lắng nghe các ý kiến của bạn !</h4>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <form asp-action="SendContact" class="formcontact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message" class="control-label"></label>
+                <textarea rows="5" asp-for="Message" class="form-control"></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Gửi liên hệ" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -158,6 +158,11 @@ using (var scope = app.Services.CreateScope())
     // DbInitializer.Initialize(context);
 }
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

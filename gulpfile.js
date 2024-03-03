@@ -1,0 +1,36 @@
+﻿var gulp = require('gulp'),
+    cssmin = require("gulp-cssmin")
+rename = require("gulp-rename");
+const sass = require('gulp-sass')(require('sass'));
+
+gulp.task('sass', function () {
+    return gulp.src('assests/scss/site.scss')
+        .pipe(sass().on('error', sass.logError))
+        //.pipe(cssmin())
+        .pipe(rename({
+             //suffix: ".min"
+        }))
+        .pipe(gulp.dest('wwwroot/css/'));
+});
+
+gulp.task("watch", function () {
+    gulp.watch('assets/scss/*.scss', gulp.series('sass'));
+});    
+
+//gulp.task("watch", function () {
+//    gulp.watch('assets/scss/*.scss', gulp.series('default'));
+//});
+
+//const { src, dest } = require('guilp')
+//const sass = require('gulp-sass')(require('gulp-sass'))
+
+//function css() {
+//    return src('assets/scss/site.scss')
+//        .pipe(sass().on('error', sass.logError))
+//        // .pipe(cssmin())
+//        .pipe(rename({
+//            // suffix: ".min"
+//        }))
+//        .pipe(gulp.dest('wwwroot/css/'));
+//}
+
