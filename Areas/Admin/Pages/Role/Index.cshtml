@@ -1,0 +1,48 @@
+﻿@page
+@model Migration_EF.Areas.Admin.Pages.Role.IndexModel
+@{
+    ViewData["Title"] = "Asign Role For Users";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.3.min.js"></script>
+
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+
+<a class="btn btn-success" asp-page="./Create" >Create new role</a>
+
+<table class="table" >
+    <tr>
+        <th>Role's Name'</th>
+        @* <th>Responsibilities</th> *@
+        <th>Activity</th>
+    </tr>
+    @if (Model.roles != null)
+    {
+        @foreach (var role in Model.roles)
+        {
+            <tr>
+                <td>
+                    <p class="text-info" >@role.Name</p>
+                        <div class="row" >
+                            @foreach(var claim in role.claims)
+                            {
+                            <div class="col-6 d-flex flex-row justify-content-center ">
+                                    <li>@claim</li>
+                                </div>
+                            }
+                        </div>
+                </td>
+                <td style="min-width: 300px" >
+                    @* <form method="post" class="d-flex" >
+            <button></button>
+            </form> *@
+                    <a asp-page="./delete" asp-route-id="@role.Id" class="my-2 btn btn-danger btn-sm">Delete</a>
+                    <a asp-page="./Edit" asp-route-id="@role.Id" class="my-2 btn btn-primary btn-sm">Update</a>
+                </td>
+            </tr>
+        }
+    }
+</table>

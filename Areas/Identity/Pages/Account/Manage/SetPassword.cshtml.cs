@@ -8,22 +8,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Migration_EF.Areas.Admin.Pages.User;
 using Migration_EF.Models;
 
 namespace Migration_EF.Areas.Identity.Pages.Account.Manage
 {
-    public class SetPasswordModel : PageModel
+    public class SetPasswordModel : UserPageModel
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _signInManager;
+       
 
         public SetPasswordModel(
+            BlogContext context,
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+            SignInManager<AppUser> signInManager) : base(context, userManager, signInManager)
+        {}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

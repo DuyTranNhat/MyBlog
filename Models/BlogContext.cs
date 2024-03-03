@@ -11,6 +11,7 @@ namespace Migration_EF.Models
             
         }
 
+        public DbSet<Contacts.Contact> Contacts { get; set; }
         public DbSet<Article> articals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

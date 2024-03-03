@@ -1,0 +1,11 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+@import '_menu.scss';
+@import '_contact.scss';
